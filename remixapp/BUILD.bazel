@@ -1,0 +1,28 @@
+load("@npm//:@remix-run/dev/package_json.bzl", remix_bin = "bin")
+
+SRCS = [
+    "//remixapp/app:app",
+    "//remixapp/app/routes:routes",
+    "//remixapp/public:public",
+    "remix.config.js",
+    "package.json",
+    "server.js",
+]
+DEPS = [
+    "//:node_modules/@remix-run/react",
+    "//:node_modules/@remix-run/cloudflare",
+    "//:node_modules/@remix-run/cloudflare-pages",
+    "//:node_modules/react",
+    "//:node_modules/react-dom",
+]
+
+remix_bin.remix(
+    name = "remixapp",
+    args = ["build"],
+    srcs = SRCS + DEPS,
+    env = {
+        "NODE_ENV": "production",
+    },
+    out_dirs = ["public/build", "functions"],
+    chdir = package_name(),
+)

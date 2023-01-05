@@ -25,6 +25,21 @@ npm_translate_lock(
     npmrc = "//:.npmrc",
     pnpm_lock = "//:pnpm-lock.yaml",
     verify_node_modules_ignored = "//:.bazelignore",
+    bins = {
+        "@remix-run/dev": {
+            "remix": "dist/cli.js",
+        },
+    },
+    patch_args = {
+        "browserify-zlib@0.1.4": ["-p1"],
+    },
+    patches = {
+        "browserify-zlib@0.1.4": ["//patches:browserify-zlib_0.1.4.patch"],
+    },
+    # This reports `node-gyp not found` error
+    lifecycle_hooks_exclude = [
+        "deasync",
+    ],
 )
 
 load("@npm//:repositories.bzl", "npm_repositories")

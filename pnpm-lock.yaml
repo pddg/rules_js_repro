@@ -3,9 +3,6 @@ lockfileVersion: 5.4
 importers:
 
   .:
-    specifiers: {}
-
-  remixapp:
     specifiers:
       '@cloudflare/workers-types': 3.18.0
       '@remix-run/cloudflare': 1.9.0
@@ -23,6 +20,9 @@ importers:
     devDependencies:
       '@cloudflare/workers-types': 3.18.0
       '@remix-run/dev': 1.9.0_biqbaboplfbrettd7655fr4n2y
+
+  remixapp:
+    specifiers: {}
 
 packages:
 
