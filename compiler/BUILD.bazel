@@ -1,0 +1,9 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+
+js_binary(
+    name = "bin",
+    # Reference the location where the acorn npm module was linked in the root Bazel package
+    data = ["//:node_modules/esbuild"],
+    entry_point = "main.js",
+    visibility = ["//visibility:public"],
+)

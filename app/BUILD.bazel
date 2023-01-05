@@ -1,0 +1,27 @@
+load("@aspect_rules_js//js:defs.bzl", "js_run_binary", "js_library")
+
+js_library(
+    name = "src",
+    srcs = ["app.js"],
+)
+
+js_run_binary(
+    name = "app",
+    tool = "//compiler:bin",
+    args = ["app.js", "out.js"],
+    srcs = [":src"],
+    outs = ["out.js"],
+    chdir = package_name(),
+    silent_on_success = False,
+)
+
+js_run_binary(
+    name = "app_without_patch",
+    tool = "//compiler:bin",
+    args = ["app.js", "out_without_patch.js"],
+    srcs = [":src"],
+    outs = ["out_without_patch.js"],
+    chdir = package_name(),
+    silent_on_success = False,
+    patch_node_fs = False,
+)
