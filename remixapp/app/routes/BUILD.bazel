@@ -1,0 +1,10 @@
+load("@aspect_rules_js//js:defs.bzl", "js_library")
+
+SRCS = glob(["*.tsx", "*.ts"])
+
+js_library(
+    name = "routes",
+    srcs = SRCS,
+    deps = [],
+    visibility = ["//remixapp/app:__subpackages__"],
+)

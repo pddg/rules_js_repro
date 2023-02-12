@@ -1,0 +1,66 @@
+load("@aspect_rules_js//js:defs.bzl", "js_run_devserver")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@npm//remixapp:@remix-run/dev/package_json.bzl", remix_bin = "bin")
+load("@npm//remixapp:wrangler/package_json.bzl", wrangler_bin = "bin")
+
+npm_link_all_packages(name = "node_modules")
+
+remix_bin.remix(
+    name = "pages",
+    args = ["build"],
+    srcs = [
+        "//remixapp/app",
+        "//remixapp/public",
+        "package.json",
+        "remix.config.js",
+        "server.js",
+        "tsconfig.json",
+    ] + [
+        "//remixapp:node_modules/@remix-run/react",
+        "//remixapp:node_modules/@remix-run/cloudflare",
+        "//remixapp:node_modules/@remix-run/cloudflare-pages",
+        "//remixapp:node_modules/react",
+        "//remixapp:node_modules/@types/react",
+        "//remixapp:node_modules/react-dom",
+        "//remixapp:node_modules/@types/react-dom",
+    ],
+    env = {
+        "NODE_ENV": "production",
+    },
+    out_dirs = ["public/build", "functions"],
+    chdir = package_name(),
+)
+
+wrangler_bin.wrangler_binary(
+    name = "wrangler",
+)
+
+js_run_devserver(
+    name = "pages_dev",
+    tool = ":wrangler",
+    args = ["pages", "dev", "./public"],
+    env = {
+        "NODE_ENV": "development",
+    },
+    data = [
+        ":pages",
+        "//remixapp/public",
+        "wrangler.toml",
+    ],
+    chdir = package_name(),
+)
+
+js_run_devserver(
+    name = "pages_start",
+    tool = ":wrangler",
+    args = ["pages", "dev", "./public"],
+    env = {
+        "NODE_ENV": "production",
+    },
+    data = [
+        ":pages",
+        "//remixapp/public",
+        "wrangler.toml",
+    ],
+    chdir = package_name(),
+)

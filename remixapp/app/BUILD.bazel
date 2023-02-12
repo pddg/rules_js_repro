@@ -1,0 +1,20 @@
+load("@aspect_rules_js//js:defs.bzl", "js_library")
+
+SRCS = glob(["*.tsx", "*.ts"])
+DEPS = [
+    "//remixapp:node_modules/@remix-run/react",
+    "//remixapp:node_modules/@remix-run/cloudflare",
+    "//remixapp:node_modules/react",
+    "//remixapp:node_modules/@types/react",
+    "//remixapp:node_modules/react-dom",
+    "//remixapp:node_modules/@types/react-dom",
+]
+
+js_library(
+    name = "app",
+    srcs = SRCS + [
+        "//remixapp/app/routes:routes",
+    ],
+    visibility = ["//remixapp:__subpackages__"],
+    deps = DEPS,
+)
