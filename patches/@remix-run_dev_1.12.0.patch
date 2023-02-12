@@ -1,0 +1,43 @@
+--- dist/compiler/assets.js 2022-12-10 10:45:45.551670539 +0900
++++ dist/compiler/assets.js 2022-12-10 15:11:02.721211338 +0900
+@@ -12,6 +12,7 @@ Object.defineProperty(exports, '__esModule', { value: 
+ 
+ Object.defineProperty(exports, '__esModule', { value: true });
+ 
++var fs = require('fs');
+ var path = require('path');
+ var invariant = require('../invariant.js');
+ var routeExports = require('./routeExports.js');
+@@ -36,6 +37,7 @@ function _interopNamespace(e) {
+   return Object.freeze(n);
+ }
+ 
++var fs__namespace = /*#__PURE__*/_interopNamespace(fs);
+ var path__namespace = /*#__PURE__*/_interopNamespace(path);
+ 
+ async function createAssetsManifest(config, metafile) {
+@@ -46,6 +48,15 @@ async function createAssetsManifest(config, metafile) 
+     return imports.filter(im => im.kind === "import-statement").map(im => resolveUrl(im.path));
+   }
+   let entryClientFile = path__namespace.resolve(config.appDirectory, config.entryClientFile);
++  let entryClientFileStat = fs__namespace.statSync(entryClientFile);
++  function isEntryClientFile(path) {
++    try {
++      let givenStat = fs__namespace.statSync(path);
++      return entryClientFileStat.dev === givenStat.dev && entryClientFileStat.ino === givenStat.ino;
++    } catch(e) {
++      return false;
++    }
++  }
+   let routesByFile = Object.keys(config.routes).reduce((map, key) => {
+     let route = config.routes[key];
+     map.set(route.file, map.has(route.file) ? [...map.get(route.file), route] : [route]);
+@@ -56,7 +67,7 @@ async function createAssetsManifest(config, metafile) 
+   for (let key of Object.keys(metafile.outputs).sort()) {
+     let output = metafile.outputs[key];
+     if (!output.entryPoint) continue;
+-    if (path__namespace.resolve(output.entryPoint) === entryClientFile) {
++    if (isEntryClientFile(output.entryPoint)) {
+       entry = {
+         module: resolveUrl(key),
+         imports: resolveImports(output.imports)

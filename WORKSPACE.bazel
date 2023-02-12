@@ -25,6 +25,13 @@ npm_translate_lock(
     npmrc = "//:.npmrc",
     pnpm_lock = "//:pnpm-lock.yaml",
     verify_node_modules_ignored = "//:.bazelignore",
+        patch_args = {
+        "browserify-zlib@0.1.4": ["-p1"],
+    },
+    patches = {
+        "browserify-zlib@0.1.4": ["//patches:browserify-zlib_0.1.4.patch"],
+        "@remix-run/dev@1.12.0": ["//patches:@remix-run_dev_1.12.0.patch"],
+    },
 )
 
 load("@npm//:repositories.bzl", "npm_repositories")

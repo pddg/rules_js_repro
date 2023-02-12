@@ -1,0 +1,12 @@
+diff --git a/package.json b/package.json
+index dfa960d..dce7c1e 100644
+--- a/package.json
++++ b/package.json
+@@ -3,7 +3,6 @@
+   "version": "0.1.4",
+   "description": "Full zlib module for browserify",
+   "keywords": ["zlib", "browserify"],
+-  "main": "index.js",
+   "directories": {
+     "test": "test"
+   },
