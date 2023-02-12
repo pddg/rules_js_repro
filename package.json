@@ -1,5 +1,15 @@
 {
     "devDependencies": {
+        "@bazel/ibazel": "0.16.2",
         "esbuild": "0.16.14"
+    },
+    "pnpm": {
+        "packageExtensions": {
+            "deasync": {
+                "dependencies": {
+                    "node-gyp": "*"
+                }
+            }
+        }
     }
 }
